@@ -1,0 +1,39 @@
+import java.util.*;
+
+public class ImpaleSimulaton
+{
+    public static void main(String[] args)
+    {
+
+        List<Integer[]> impales = new ArrayList<>();
+        List<Integer> finalImpales = new ArrayList<>();
+        Random rand = new Random();
+
+        for(int strikes = 0; strikes < 1000000; strikes++)
+        {
+            // Each strike reduce the remaining stacks of each impale / remove the impale / randomly(10% chance) increment the value
+            for(int impale = 0; impale < impales.size(); impale++)
+            {
+                // Reduce impale stacks if 0 or less remove impale
+                if(rand.nextInt(100) >= 90) impales.get(impale)[0]++;
+                
+                impales.get(impale)[0]--;
+                if(impales.get(impale)[0] <= 0){
+                    finalImpales.add(strikes - impales.get(impale)[1]);
+                    impales.remove(impale);
+                    impale--;
+                    continue;
+                }
+
+            }
+
+            impales.add(new Integer[] {5, strikes});
+        }
+
+        double sum = 0;
+
+        for(Integer finalImpale : finalImpales) sum += finalImpale;
+
+        System.out.println("Avg # of impales: "  + sum / finalImpales.size());
+    }
+}
